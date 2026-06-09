@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ideal OMR Answer Sheet</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #333; 
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+            padding: 20px; 
+            font-family: Arial, sans-serif;
+        }
+
+        .sheet-container {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sheet-container">
+        <svg id="omr" viewBox="0 0 1000 1414" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="30" width="45" height="45" fill="black" />
+            <rect x="925" y="30" width="45" height="45" fill="black" />
+            <rect x="30" y="1339" width="45" height="45" fill="black" />
+            <rect x="925" y="1339" width="45" height="45" fill="black" />
+
+            <text x="500" y="90" font-family="Arial, sans-serif" font-size="42" font-weight="900" text-anchor="middle" fill="black">BATANG HENYO</text>
+            <text x="500" y="130" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="black">SCIENCE ANSWER SHEET</text>
+
+            <rect x="110" y="160" width="780" height="50" fill="none" stroke="black" stroke-width="2.5" />
+            <line x1="500" y1="160" x2="500" y2="210" stroke="black" stroke-width="2.5" />
+            <text x="125" y="192" font-family="Arial, sans-serif" font-size="18" fill="black" font-weight="bold">Name:</text>
+            <text x="515" y="192" font-family="Arial, sans-serif" font-size="18" fill="black" font-weight="bold">Date:</text>
+        </svg>
+    </div>
+
+    <script>
+        const svg = document.getElementById('omr');
+        const colStarts = [110, 410, 710];
+        const firstRowY = 250;
+        const rowGap = 46;
+        const choiceGap = 31;
+        const radius = 9;
+        const choices = ['A', 'B', 'C', 'D', 'E'];
+
+        for (let col = 0; col < 3; col++) {
+            for (let row = 0; row < 20; row++) {
+                const qNum = col * 20 + row + 1;
+                const y = firstRowY + row * rowGap;
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", colStarts[col] - 15);
+                text.setAttribute("y", y + 5);
+                text.setAttribute("font-family", "Arial, sans-serif");
+                text.setAttribute("font-size", "16");
+                text.setAttribute("font-weight", "bold");
+                text.setAttribute("text-anchor", "end");
+                text.textContent = qNum + ".";
+                svg.appendChild(text);
+
+                for (let c = 0; c < 5; c++) {
+                    const x = colStarts[col] + c * choiceGap;
+
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", x);
+                    circle.setAttribute("cy", y);
+                    circle.setAttribute("r", radius);
+                    circle.setAttribute("fill", "white");
+                    circle.setAttribute("stroke", "black");
+                    circle.setAttribute("stroke-width", "2.5");
+                    svg.appendChild(circle);
+
+                    const letter = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    letter.setAttribute("x", x);
+                    letter.setAttribute("y", y + 4);
+                    letter.setAttribute("font-family", "Arial, sans-serif");
+                    letter.setAttribute("font-size", "11");
+                    letter.setAttribute("font-weight", "bold");
+                    letter.setAttribute("text-anchor", "middle");
+                    letter.textContent = choices[c];
+                    svg.appendChild(letter);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
